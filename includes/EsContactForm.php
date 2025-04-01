@@ -13,18 +13,24 @@ class EsContactForm
 
     public function __construct () {
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
-        add_action('wp_ajax_es_contact_submit', array($this, 'handleRequest'));
-        add_action('wp_ajax_nopriv_es_contact_submit', array($this, 'handleRequest'));
+        add_action('wp_ajax_es_contact_form_submit', array($this, 'handleRequest'));
+        add_action('wp_ajax_nopriv_es_contact_form_submit', array($this, 'handleRequest'));
     }
 
     public function enqueueScripts() {
 	    wp_enqueue_script(
 		    self::HANDLE,
-		    ES_CONTACT_FORM_PLUGIN_URL . 'assets/js/app.js',
+		    ES_CONTACT_FORM_PLUGIN_URL . 'dist/js/main.js',
 		    array(),
 		    self::VERSION,
 		    true
 	    );
+        wp_enqueue_style(
+            self::HANDLE,
+            ES_CONTACT_FORM_PLUGIN_URL . 'dist/assets/main.css',
+            array(),
+            self::VERSION
+        );
         wp_localize_script(
             self::HANDLE,
             self::JS_OBJECT_NAME,
@@ -70,7 +76,7 @@ class EsContactForm
         $sent = wp_mail($to, $subject, $email_content, $headers);
 
         if ($sent) {
-            wp_send_json_success('Your message has been sent.  Expect a response shortly');
+            wp_send_json_success('Your message has been sent.  We will get back to you shortly!');
         } else {
             wp_send_json_error('An error occurred while sending your message');
         }
