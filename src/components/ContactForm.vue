@@ -61,6 +61,7 @@ export default {
         formData.append('last_name', this.form.last_name);
         formData.append('name', this.form.name);
         formData.append('email', this.form.email);
+        formData.append('phone', this.form.phone);
         formData.append('message', this.form.message);
 
         const response = await fetch(EsContactForm.ajaxurl, {
@@ -77,6 +78,7 @@ export default {
           this.form.first_name = '';
           this.form.last_name = '';
           this.form.email = '';
+          this.form.phone = '';
           this.form.message = '';
         } else {
           this.status.error = true;

@@ -49,11 +49,11 @@ class EsContactForm
         // Get and sanitize data
         $name = isset($_POST['name']) ? sanitize_text_field($_POST['name']) : '';
         $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
-        $phone = isset($_POST['phone']) ? sanitize_email($_POST['phone']) : '';
+        $phone = isset($_POST['phone']) ? sanitize_text_field($_POST['phone']) : '';
         $message = isset($_POST['message']) ? sanitize_textarea_field($_POST['message']) : '';
 
         // Validate data
-        if (empty($name) || empty($email) || empty($message)) {
+        if (empty($name) || empty($email) || empty($phone) || empty($message)) {
             wp_send_json_error('Please fill in all fields');
         }
 
@@ -67,9 +67,10 @@ class EsContactForm
         $headers = array('Content-Type: text/html; charset=UTF-8');
 
         $email_content = sprintf(
-            'Name: %s<br>Email: %s<br>Message: %s',
+            'Name: %s<br>Email: %s<br>Phone: %s<br> Message: %s',
             $name,
             $email,
+            $phone,
             nl2br($message)
         );
 
